@@ -2,12 +2,13 @@ using System.Net;
 using API.Dtos;
 using API.Services;
 using API.Utilities.Handler;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [Route("users")]
-//[Authorize]
+[Authorize]
 [ApiController]
 public class UserController : ControllerBase
 {

@@ -98,18 +98,10 @@ public abstract class GeneralRepository<TEntity> : IGeneralRepository<TEntity> w
     )
     {
         IQueryable<TEntity> query = Context.Set<TEntity>();
-
+        
         foreach (var include in includes)
         {
             query = query.Include(include);
-        }
-
-        if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-        {
-            // Add a filter for soft-deleted entities
-            query = query.IgnoreQueryFilters().Where(entity =>
-                !(entity is ISoftDeletable) || 
-                !((ISoftDeletable)entity).DeletedAt.HasValue);
         }
 
         if (where != null)
@@ -121,7 +113,7 @@ public abstract class GeneralRepository<TEntity> : IGeneralRepository<TEntity> w
         {
             query = orderBy(query);
         }
-
+        
         return query.ToList();
     }
 }
