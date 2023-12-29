@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using API.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace API.Entities;
+namespace API.Context;
 
 public partial class MyContext : DbContext
 {
@@ -21,10 +22,7 @@ public partial class MyContext : DbContext
     public virtual DbSet<UserRole> TblTrUserRoles { get; set; }
 
     public virtual DbSet<Vendor> TblTrVendors { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("server=localhost;database=sms;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.32-mariadb"));
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder

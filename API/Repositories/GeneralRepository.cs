@@ -1,14 +1,19 @@
 using System.Linq.Expressions;
+using API.Context;
 using API.Entities;
 using API.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories;
 
-public class GeneralRepository<TEntity>(MyContext context) : IGeneralRepository<TEntity>
-    where TEntity : class
+public abstract class GeneralRepository<TEntity> : IGeneralRepository<TEntity> where TEntity : class
 {
-    protected readonly MyContext Context = context;
+    protected readonly MyContext Context;
+
+    public GeneralRepository(MyContext context)
+    {
+        Context = context;
+    }
 
     public TEntity? Create(TEntity entity)
     {
@@ -73,20 +78,16 @@ public class GeneralRepository<TEntity>(MyContext context) : IGeneralRepository<
 
     public IEnumerable<TEntity> GetAll()
     {
-        return Context.Set<TEntity>()
-            .IgnoreQueryFilters()
+        return Context.Set<TEntity>().ToList()
             .Where(entity =>
-                !(entity is ISoftDeletable) || 
-                !((ISoftDeletable)entity).DeletedAt.HasValue)
-            .ToList();
+                !(entity is ISoftDeletable) ||
+                !((ISoftDeletable)entity).DeletedAt.HasValue);
     }
 
     public TEntity? GetByGuid(string guid)
     {
-        var entity = Context.Set<TEntity>()
-            .Find(guid);
-        Context.ChangeTracker
-            .Clear();
+        var entity = Context.Set<TEntity>().Find(guid);
+        Context.ChangeTracker.Clear();
         return entity;
     }
     
