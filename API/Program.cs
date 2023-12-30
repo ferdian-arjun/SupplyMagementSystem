@@ -1,6 +1,5 @@
 using System.Net;
 using API.Configurations;
-using API.Entities;
 using API.Interface;
 using API.Repositories;
 using API.Services;
@@ -18,7 +17,8 @@ builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<VendorService>();
 builder.Services.AddScoped<RoleService>();
-builder.Services.AddScoped<UserRole>();
+builder.Services.AddScoped<UserRoleService>();
+builder.Services.AddScoped<ProjectVendorService>();
 
 // Repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -27,6 +27,7 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IProjectVendorRepository, ProjectVendorRepository>();
 
 
 //error Controller
