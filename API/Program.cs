@@ -1,5 +1,6 @@
 using System.Net;
 using API.Configurations;
+using API.Entities;
 using API.Interface;
 using API.Repositories;
 using API.Services;
@@ -10,18 +11,22 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 // Services
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<VendorService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<UserRole>();
 
 // Repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
 
 //error Controller
