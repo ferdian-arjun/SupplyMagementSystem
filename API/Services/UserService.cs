@@ -1,4 +1,5 @@
 using API.Dtos;
+using API.Dtos.User;
 using API.Interface;
 
 namespace API.Services;
@@ -12,21 +13,21 @@ public class UserService
         _userRepository = userRepository;
     }
 
-    public IEnumerable<GetUsersDto> Get()
+    public IEnumerable<GetUserDto> Get()
     {
         var users = _userRepository.GetAll();
-        if (!users.Any()) return Enumerable.Empty<GetUsersDto>();
+        if (!users.Any()) return Enumerable.Empty<GetUserDto>();
         
-        List<GetUsersDto> getUsersDtos = new();
-        foreach (var user in users) getUsersDtos.Add((GetUsersDto)user);
-        return getUsersDtos;
+        List<GetUserDto> getUserDtos = new();
+        foreach (var user in users) getUserDtos.Add((GetUserDto)user);
+        return getUserDtos;
     }
 
-    public GetUsersDto? CreateUser(CreateUserDto createUserDto)
+    public GetUserDto? CreateUser(CreateUserDto createUserDto)
     {
-        var createAccountStatus = _userRepository.Create(createUserDto);
-        if (createAccountStatus is null) return null; 
-        return (GetUsersDto)createAccountStatus;
+        var createUser = _userRepository.Create(createUserDto);
+        if (createUser is null) return null; 
+        return (GetUserDto)createUser;
     }
 
     public int UpdateUser(UpdateUserDto updateUserDto)
@@ -38,11 +39,11 @@ public class UserService
         return isUpdate ? 1 : 0;
     }
 
-    public GetUsersDto? GetByGuid(string guid)
+    public GetUserDto? GetByGuid(string guid)
     {
         var getUser = _userRepository.GetByGuid(guid);
         if (getUser is null) return null;
-        return (GetUsersDto)getUser;
+        return (GetUserDto)getUser;
     }
 
     public int DeleteUser(string guid)

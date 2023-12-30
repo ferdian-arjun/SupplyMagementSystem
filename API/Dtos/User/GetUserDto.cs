@@ -1,8 +1,7 @@
-using API.Entities;
+namespace API.Dtos.User;
+using Entities;
 
-namespace API.Dtos;
-
-public class GetUsersDto
+public class GetUserDto
 {
     public string Guid { get; set; }
     public string Username { get; set; }
@@ -12,9 +11,9 @@ public class GetUsersDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     
-    public static explicit operator GetUsersDto(User user)
+    public static explicit operator GetUserDto(User user)
     {
-        return new GetUsersDto
+        return new GetUserDto
         {
             Guid = user.Guid,
             Username = user.Username,

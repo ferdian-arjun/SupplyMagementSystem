@@ -1,6 +1,5 @@
 using System.Net;
-using API.Dtos;
-using API.Dtos.User;
+using API.Dtos.Company;
 using API.Services;
 using API.Utilities.Handler;
 using Microsoft.AspNetCore.Authorization;
@@ -8,32 +7,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("users")]
+[Route("companies")]
 [Authorize]
 [ApiController]
-public class UserController : ControllerBase
+public class CompanyController : ControllerBase
 {
-    private readonly UserService _userService;
+    private readonly CompanyService _companyService;
 
-    public UserController(UserService userService)
+    public CompanyController(CompanyService companyService)
     {
-        _userService = userService;
+        _companyService = companyService;
     }
-
+    
     [HttpGet]
     public IActionResult GetAll()
     {
         try
         {
-            var result = _userService.Get(); 
+            var result = _companyService.Get(); 
             if (!result.Any())
-                return NotFound(new ResponseDataHandler<GetUserDto>
+                return NotFound(new ResponseDataHandler<GetCompanyDto>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
                     Message = "Data Not Found"
                 });
-            return Ok(new ResponseDataHandler<IEnumerable<GetUserDto>>
+            return Ok(new ResponseDataHandler<IEnumerable<GetCompanyDto>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
@@ -43,7 +42,6 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            //if error
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseExceptionHandler
             {
                 Code = StatusCodes.Status500InternalServerError,
@@ -58,15 +56,15 @@ public class UserController : ControllerBase
     {
         try
         {
-            var result = _userService.GetByGuid(guid);
+            var result = _companyService.GetByGuid(guid);
             if (result is null)
-                return NotFound(new ResponseDataHandler<GetUserDto>
+                return NotFound(new ResponseDataHandler<GetCompanyDto>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
                     Message = "Data Not Found"
                 });
-            return Ok(new ResponseDataHandler<GetUserDto>
+            return Ok(new ResponseDataHandler<GetCompanyDto>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
@@ -86,11 +84,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult Update(UpdateUserDto updateUserDto)
+    public IActionResult Update(UpdateCompanyDto updateCompanyDto)
     {
         try
         {
-            var update = _userService.UpdateUser(updateUserDto);
+            var update = _companyService.UpdateCompany(updateCompanyDto);
             if (update is -1)
                 return NotFound(new ResponseHandler
                 {
@@ -114,7 +112,6 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            //if error
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseExceptionHandler
             {
                 Code = StatusCodes.Status500InternalServerError,
@@ -129,7 +126,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var delete = _userService.DeleteUser(guid);
+            var delete = _companyService.DeleteCompany(guid);
 
             if (delete is -1)
                 return NotFound(new ResponseHandler
@@ -156,7 +153,6 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            //if error
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseExceptionHandler
             {
                 Code = StatusCodes.Status500InternalServerError,
@@ -167,20 +163,20 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(CreateUserDto createUserDto)
+    public IActionResult Create(CreateCompanyDto createCompanyDto)
     {
         try
         {
-            var create = _userService.CreateUser(createUserDto);
+            var create = _companyService.CreateCompany(createCompanyDto);
             if (create is null)
-                return BadRequest(new ResponseDataHandler<GetUserDto>
+                return BadRequest(new ResponseDataHandler<GetCompanyDto>
                 {
                     Code = StatusCodes.Status400BadRequest,
                     Status = HttpStatusCode.BadRequest.ToString(),
                     Message = "data failed inputted"
                 });
 
-            return Ok(new ResponseDataHandler<GetUserDto>
+            return Ok(new ResponseDataHandler<GetCompanyDto>
             {
                 Code = StatusCodes.Status201Created,
                 Status = HttpStatusCode.OK.ToString(),
@@ -190,7 +186,6 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            //if error
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseExceptionHandler
             {
                 Code = StatusCodes.Status500InternalServerError,

@@ -1,6 +1,5 @@
-using API.Entities;
-
-namespace API.Dtos;
+namespace API.Dtos.User;
+using Entities;
 
 public class CreateUserDto
 {

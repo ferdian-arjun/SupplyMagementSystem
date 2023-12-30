@@ -1,6 +1,5 @@
-using API.Entities;
-
-namespace API.Dtos;
+namespace API.Dtos.User;
+using Entities;
 
 public class UpdateUserDto
 {
@@ -19,7 +18,6 @@ public class UpdateUserDto
             Email = user.Email,
             Password = user.Password,
             FullName = user.FullName,
-            CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
     }
