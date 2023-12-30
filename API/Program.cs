@@ -13,11 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CompanyService>();
+builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 
 //error Controller

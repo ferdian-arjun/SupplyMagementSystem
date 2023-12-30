@@ -87,11 +87,15 @@ public partial class MyContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
-            entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("datetime")
+                .HasColumnName("end_date");
             entity.Property(e => e.Name)
                 .HasMaxLength(225)
                 .HasColumnName("name");
-            entity.Property(e => e.StartDate).HasColumnName("start_date");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("datetime")
+                .HasColumnName("start_date");
             entity.Property(e => e.Status)
                 .HasColumnType("enum('OnPlan','OnProgress','Done','Canceled')")
                 .HasColumnName("status");
@@ -260,7 +264,7 @@ public partial class MyContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("deleted_at");
             entity.Property(e => e.Status)
-                .HasColumnType("enum('WaitingForApproval','Approval','Rejected','')")
+                .HasColumnType("enum('WaitingForApproval','Approval','Rejected')")
                 .HasColumnName("status");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("datetime")
