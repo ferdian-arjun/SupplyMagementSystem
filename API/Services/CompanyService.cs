@@ -1,15 +1,20 @@
+using System.Transactions;
 using API.Dtos.Company;
+using API.Entities;
 using API.Interface;
+using API.Utilities.Enum;
 
 namespace API.Services;
 
 public class CompanyService
 {
     private readonly ICompanyRepository _companyRepository;
+    private readonly IVendorRepository _vendorRepository;
 
-    public CompanyService(ICompanyRepository companyRepository)
+    public CompanyService(ICompanyRepository companyRepository, IVendorRepository vendorRepository)
     {
         _companyRepository = companyRepository;
+        _vendorRepository = vendorRepository;
     }
     
     public IEnumerable<GetCompanyDto> Get()
@@ -24,9 +29,25 @@ public class CompanyService
 
     public GetCompanyDto? CreateCompany(CreateCompanyDto createCompanyDto)
     {
-        var createAccountStatus = _companyRepository.Create(createCompanyDto);
-        if (createAccountStatus is null) return null; 
-        return (GetCompanyDto)createAccountStatus;
+        using var scope = new TransactionScope();
+        var company = _companyRepository.Create(createCompanyDto);
+        if (company is null) return null; 
+        
+        //create vendor
+        var vendor  = _vendorRepository.Create(new Vendor()
+        {
+            Guid =  Guid.NewGuid().ToString(),
+            CompanyGuid = company.Guid,
+            Status = VendorStatus.WaitingForApproval,
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
+        });
+        
+        if (vendor is null) return null; 
+        
+        scope.Complete();
+        
+        return (GetCompanyDto)company;
     }
 
     public int UpdateCompany(UpdateCompanyDto updateCompanyDto)

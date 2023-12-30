@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using API.Interface;
+using API.Utilities.Enum;
 
 namespace API.Entities;
 
@@ -10,7 +12,8 @@ public partial class Vendor : ISoftDeletable
 
     public string CompanyGuid { get; set; } = null!;
 
-    public string Status { get; set; } = null!;
+    [Column("status", TypeName = "enum('WaitingForApproval','Approval','Rejected')")]
+    public VendorStatus Status { get; set; }
 
     public string? ConfirmBy { get; set; }
 

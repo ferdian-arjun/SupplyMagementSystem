@@ -14,12 +14,14 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<VendorService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 
 
 //error Controller

@@ -21,14 +21,7 @@ public class SwaggerConfiguration
                 x.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Bootcamp Resource Management APIs",
-                    Description =
-                        "Dokumentasi API ini menjelaskan endpoint-endpoint yang tersedia dalam aplikasi Bootcamp Resource Management (BRM).",
-                    License = new OpenApiLicense
-                    {
-                        Name = "License by Metrodata Academy",
-                        Url = new Uri("https://metrodataacademy.id/")
-                    }
+                    Title = "Supply Management System APIs",
                 });
 
                 // Add JWT authentication
