@@ -20,13 +20,14 @@ public class JwtService : IJwtService
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
-
+        
+        
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim("Username", user.Username),
+                new Claim("FullName", user.FullName),
+                new Claim("Guid", user.Guid),
                 new Claim(ClaimTypes.Email, user.Email),
             }),
             Expires = DateTime.UtcNow.AddHours(1),

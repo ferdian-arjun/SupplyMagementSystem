@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/auth")]
+[Route("auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {
@@ -28,7 +28,7 @@ public class AuthController : ControllerBase
         {
             var result = _authService.Login(loginDto);
 
-            if (result.Code == 200) return Ok(new ResponseDataHandler<string>()
+            if (result.Code == 200) return Ok(new ResponseDataHandler<TokenDto>()
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
                 Data = result.Data
             });
             
-            return Unauthorized(new ResponseHandler()
+            return Unauthorized(new ResponseDataHandler<TokenDto>()
             {
                 Code = StatusCodes.Status401Unauthorized,
                 Status = HttpStatusCode.Unauthorized.ToString(),

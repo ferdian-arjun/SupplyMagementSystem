@@ -15,7 +15,7 @@ public class AuthService
         _jwtService = jwtService;
     }
 
-    public ResponseServiceHandler<string> Login(LoginDto loginDto)
+    public ResponseServiceHandler<TokenDto> Login(LoginDto loginDto)
     {
         try
         {
@@ -23,7 +23,7 @@ public class AuthService
 
             if (existingUser == null || !HashingHandler.ValidatePassword(loginDto.Password, existingUser.Password))
             {
-                return new ResponseServiceHandler<string>
+                return new ResponseServiceHandler<TokenDto>
                 {
                     Code = 401,
                     Message = "Invalid email or password"
@@ -32,16 +32,19 @@ public class AuthService
 
             var token = _jwtService.GenerateToken(existingUser);
             
-            return new ResponseServiceHandler<string>
+            return new ResponseServiceHandler<TokenDto>
             {
                 Code = 200,
                 Message = "Data Success",
-                Data = token
+                Data = new TokenDto()
+                {
+                    Token = token
+                }
             };
         }
         catch (Exception e)
         {
-            return new ResponseServiceHandler<string>()
+            return new ResponseServiceHandler<TokenDto>()
             {
                 Code = 500,
                 Message = e.Message

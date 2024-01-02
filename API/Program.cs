@@ -78,6 +78,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+app.UsePathBase(new PathString("/api/v1"));
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -86,6 +87,9 @@ app.UseRouting();
 app.UseCors("AllowOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader());
+
 app.MapControllers();
 
 app.Run();
