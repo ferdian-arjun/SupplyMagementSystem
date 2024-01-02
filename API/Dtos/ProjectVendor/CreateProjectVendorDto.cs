@@ -9,6 +9,7 @@ public class CreateProjectVendorDto
     {
         return new ProjectVendor()
         {
+            Guid =  Guid.NewGuid().ToString(),
             ProjectGuid  =  projectVendorDto.ProjectGuid,
             VendorGuid = projectVendorDto.VendorGuid,
             CreatedAt = DateTime.Now,

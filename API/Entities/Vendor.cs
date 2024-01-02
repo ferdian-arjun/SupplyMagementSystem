@@ -26,4 +26,6 @@ public partial class Vendor : ISoftDeletable
     public virtual Company Company { get; set; } = null!;
 
     public virtual User? ConfirmByNavigation { get; set; }
+    
+    public virtual ICollection<ProjectVendor> TblTrProjectVendors { get; set; } = new List<ProjectVendor>();
 }

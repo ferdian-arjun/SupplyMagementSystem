@@ -31,6 +31,7 @@ public class UserRoleService
         {
             getUserByRoleDtos.Add(new GetUserByRoleDto()
             {
+                Guid = userRole.Guid,
                 UserGuid = userRole.UserGuid,
                 RoleGuid = userRole.RoleGuid,
                 RoleName = userRole.Role.Name,
@@ -61,6 +62,7 @@ public class UserRoleService
         {
             getRoleByUserDtos.Add(new GetRoleByUserDto()
             {
+                Guid = userRole.Guid,
                 UserGuid = userRole.UserGuid,
                 RoleGuid = userRole.RoleGuid,
                 RoleName = userRole.Role.Name,
@@ -75,9 +77,9 @@ public class UserRoleService
         return getRoleByUserDtos;
     }
     
-    public GetUserRoleDto? CreateUserRole(CreateUserRoleDto createUserRoleDto)
+    public GetUserRoleDto? CreateUserRole(CreateUserRoleDto create)
     {
-        var createUserRole = _userRoleRepository.Create(createUserRoleDto);
+        var createUserRole = _userRoleRepository.Create(create);
         if (createUserRole is null) return null; 
         return (GetUserRoleDto)createUserRole;
     }

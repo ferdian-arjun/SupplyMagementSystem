@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using API.Interface;
+﻿using API.Interface;
 
 namespace API.Entities;
 
 public partial class UserRole : ISoftDeletable
 {
+    public string Guid { get; set; } = null!;
+    
     public string UserGuid { get; set; } = null!;
 
     public string RoleGuid { get; set; } = null!;

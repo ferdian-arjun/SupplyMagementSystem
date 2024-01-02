@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using API.Interface;
+﻿using API.Interface;
 
 namespace API.Entities;
 
@@ -15,4 +13,8 @@ public partial class Role : ISoftDeletable
     public DateTime UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual ICollection<UserRole> TblTrUserRoles { get; set; } = new List<UserRole>();
+    
+    
 }

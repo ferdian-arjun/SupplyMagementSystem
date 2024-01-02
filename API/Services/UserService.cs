@@ -1,5 +1,7 @@
+using System.Transactions;
 using API.Dtos;
 using API.Dtos.User;
+using API.Entities;
 using API.Interface;
 
 namespace API.Services;
@@ -7,15 +9,17 @@ namespace API.Services;
 public class UserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUserRoleRepository _userRoleRepository;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IUserRoleRepository userRoleRepository)
     {
         _userRepository = userRepository;
+        _userRoleRepository = userRoleRepository;
     }
 
     public IEnumerable<GetUserDto> Get()
     {
-        var users = _userRepository.GetAll();
+        var users = _userRepository.Get(includes: user => user.TblTrUserRoles);
         if (!users.Any()) return Enumerable.Empty<GetUserDto>();
         
         List<GetUserDto> getUserDtos = new();
@@ -34,8 +38,14 @@ public class UserService
     {
         var getUser = _userRepository.GetByGuid(updateUserDto.Guid);
         if (getUser is null) return -1;
-
-        var isUpdate = _userRepository.Update(updateUserDto);
+        
+        //update
+        getUser.Username = updateUserDto.Username;
+        getUser.Email = updateUserDto.Email;
+        getUser.FullName = updateUserDto.FullName;
+        getUser.UpdatedAt = DateTime.Now;
+        
+        var isUpdate = _userRepository.Update(getUser);
         return isUpdate ? 1 : 0;
     }
 

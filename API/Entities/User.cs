@@ -22,5 +22,7 @@ public partial class User : ISoftDeletable
 
     public DateTime? DeletedAt { get; set; }
 
+    public virtual ICollection<UserRole> TblTrUserRoles { get; set; } = new List<UserRole>();
+
     public virtual ICollection<Vendor> TblTrVendors { get; set; } = new List<Vendor>();
 }

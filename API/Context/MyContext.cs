@@ -33,7 +33,9 @@ public partial class MyContext : DbContext
         {
             entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
-            entity.ToTable("tbl_m_companies");
+            entity
+                .ToTable("tbl_m_companies")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.Property(e => e.Guid)
                 .HasMaxLength(36)
@@ -42,7 +44,7 @@ public partial class MyContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("business_type");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)
@@ -72,13 +74,15 @@ public partial class MyContext : DbContext
         {
             entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
-            entity.ToTable("tbl_m_projects");
+            entity
+                .ToTable("tbl_m_projects")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.Property(e => e.Guid)
                 .HasMaxLength(36)
                 .HasColumnName("guid");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)
@@ -87,15 +91,11 @@ public partial class MyContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("datetime")
-                .HasColumnName("end_date");
+            entity.Property(e => e.EndDate).HasColumnName("end_date");
             entity.Property(e => e.Name)
                 .HasMaxLength(225)
                 .HasColumnName("name");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("datetime")
-                .HasColumnName("start_date");
+            entity.Property(e => e.StartDate).HasColumnName("start_date");
             entity.Property(e => e.Status)
                 .HasColumnType("enum('OnPlan','OnProgress','Done','Canceled')")
                 .HasColumnName("status");
@@ -108,13 +108,15 @@ public partial class MyContext : DbContext
         {
             entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
-            entity.ToTable("tbl_m_roles");
+            entity
+                .ToTable("tbl_m_roles")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.Property(e => e.Guid)
                 .HasMaxLength(36)
                 .HasColumnName("guid");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)
@@ -132,13 +134,15 @@ public partial class MyContext : DbContext
         {
             entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
-            entity.ToTable("tbl_m_users");
+            entity
+                .ToTable("tbl_m_users")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.Property(e => e.Guid)
                 .HasMaxLength(36)
                 .HasColumnName("guid");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)
@@ -151,7 +155,7 @@ public partial class MyContext : DbContext
                 .HasMaxLength(64)
                 .HasColumnName("full_name");
             entity.Property(e => e.Password)
-                .HasMaxLength(36)
+                .HasMaxLength(255)
                 .HasColumnName("password");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("datetime")
@@ -163,16 +167,21 @@ public partial class MyContext : DbContext
 
         modelBuilder.Entity<ProjectVendor>(entity =>
         {
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
+
             entity
-                .HasNoKey()
-                .ToTable("tbl_tr_project_vendors");
+                .ToTable("tbl_tr_project_vendors")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.HasIndex(e => e.ProjectGuid, "project_guid");
 
             entity.HasIndex(e => e.VendorGuid, "vendor_guid");
 
+            entity.Property(e => e.Guid)
+                .HasMaxLength(36)
+                .HasColumnName("guid");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)
@@ -188,12 +197,12 @@ public partial class MyContext : DbContext
                 .HasMaxLength(36)
                 .HasColumnName("vendor_guid");
 
-            entity.HasOne(d => d.Project).WithMany()
+            entity.HasOne(d => d.Project).WithMany(p => p.TblTrProjectVendors)
                 .HasForeignKey(d => d.ProjectGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tbl_tr_project_vendors_ibfk_1");
 
-            entity.HasOne(d => d.Vendor).WithMany()
+            entity.HasOne(d => d.Vendor).WithMany(p => p.TblTrProjectVendors)
                 .HasForeignKey(d => d.VendorGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tbl_tr_project_vendors_ibfk_2");
@@ -201,16 +210,21 @@ public partial class MyContext : DbContext
 
         modelBuilder.Entity<UserRole>(entity =>
         {
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
+
             entity
-                .HasNoKey()
-                .ToTable("tbl_tr_user_roles");
+                .ToTable("tbl_tr_user_roles")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.HasIndex(e => e.RoleGuid, "role_guid");
 
             entity.HasIndex(e => e.UserGuid, "user_guid");
 
+            entity.Property(e => e.Guid)
+                .HasMaxLength(36)
+                .HasColumnName("guid");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)
@@ -226,12 +240,12 @@ public partial class MyContext : DbContext
                 .HasMaxLength(36)
                 .HasColumnName("user_guid");
 
-            entity.HasOne(d => d.Role).WithMany()
+            entity.HasOne(d => d.Role).WithMany(p => p.TblTrUserRoles)
                 .HasForeignKey(d => d.RoleGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tbl_tr_user_roles_ibfk_2");
 
-            entity.HasOne(d => d.User).WithMany()
+            entity.HasOne(d => d.User).WithMany(p => p.TblTrUserRoles)
                 .HasForeignKey(d => d.UserGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tbl_tr_user_roles_ibfk_1");
@@ -241,7 +255,9 @@ public partial class MyContext : DbContext
         {
             entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
-            entity.ToTable("tbl_tr_vendors");
+            entity
+                .ToTable("tbl_tr_vendors")
+                .UseCollation("utf8mb4_general_ci");
 
             entity.HasIndex(e => e.ConfirmBy, "confirm_by");
 
@@ -257,7 +273,7 @@ public partial class MyContext : DbContext
                 .HasMaxLength(36)
                 .HasColumnName("confirm_by");
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("current_timestamp()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DeletedAt)

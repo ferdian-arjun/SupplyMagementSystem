@@ -2,6 +2,7 @@ namespace API.Dtos.UserRole;
 
 public class GetRoleByUserDto
 {
+    public string Guid { get; set; }
     public string UserGuid { get; set; }
     public string Username { get; set; }
     public string Email { get; set; }

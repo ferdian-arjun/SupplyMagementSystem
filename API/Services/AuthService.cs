@@ -21,7 +21,7 @@ public class AuthService
         {
             var existingUser = _userRepository.Get(where: user => user.Email.Equals(loginDto.Email)).FirstOrDefault();
 
-            if (existingUser == null || existingUser.Password != loginDto.Password)
+            if (existingUser == null || !HashingHandler.ValidatePassword(loginDto.Password, existingUser.Password))
             {
                 return new ResponseServiceHandler<string>
                 {

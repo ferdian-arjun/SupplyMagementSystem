@@ -10,10 +10,11 @@ public class CreateUserRoleDto
     {
         return new UserRole
         {
+            Guid =  Guid.NewGuid().ToString(),
             UserGuid =  createRoleDto.UserGuid,
             RoleGuid = createRoleDto.RoleGuid,
             CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now
+            UpdatedAt = DateTime.Now,
         };
     }
 }

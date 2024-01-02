@@ -1,3 +1,5 @@
+using API.Utilities.Handler;
+
 namespace API.Dtos.User;
 using Entities;
 
@@ -15,7 +17,7 @@ public class CreateUserDto
             Guid =  Guid.NewGuid().ToString(),
             Username = user.Username,
             Email = user.Email,
-            Password = user.Password,
+            Password = HashingHandler.HashPassword(user.Password),
             FullName = user.FullName,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now

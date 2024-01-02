@@ -107,7 +107,7 @@ public class UserController : ControllerBase
                 });
             return Ok(new ResponseHandler
             {
-                Code = StatusCodes.Status201Created,
+                Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.Created.ToString(),
                 Message = "Successfully Updated"
             });
@@ -167,6 +167,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public IActionResult Create(CreateUserDto createUserDto)
     {
         try

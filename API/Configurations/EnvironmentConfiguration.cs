@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using API.Context;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ public class EnvironmentConfiguration
     public EnvironmentConfiguration Configuration(IConfiguration configuration)
     {
         _configuration = configuration;
+       
         return this;
     }
 

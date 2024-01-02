@@ -27,4 +27,6 @@ public partial class Project : ISoftDeletable
     public DateTime UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+    
+    public virtual ICollection<ProjectVendor> TblTrProjectVendors { get; set; } = new List<ProjectVendor>();
 }

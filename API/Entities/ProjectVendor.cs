@@ -6,6 +6,8 @@ namespace API.Entities;
 
 public partial class ProjectVendor : ISoftDeletable
 {
+    public string Guid { get; set; } = null!;
+    
     public string ProjectGuid { get; set; } = null!;
 
     public string VendorGuid { get; set; } = null!;
