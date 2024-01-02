@@ -19,7 +19,7 @@ public class UserService
 
     public IEnumerable<GetUserDto> Get()
     {
-        var users = _userRepository.Get(includes: user => user.TblTrUserRoles);
+        var users = _userRepository.GetAll();
         if (!users.Any()) return Enumerable.Empty<GetUserDto>();
         
         List<GetUserDto> getUserDtos = new();

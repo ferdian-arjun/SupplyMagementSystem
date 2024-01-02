@@ -13,9 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
+
 var service = builder.Services;
-// Repository
-service.AddScoped<AuthRepository>();
+
+// Register IHttpClientFactory
+service.AddHttpClient();
 
 // Add services to the container.
 service.AddControllersWithViews();
@@ -32,6 +34,7 @@ service.Configure<BaseUrls>(configuration.GetSection("ConnectionStrings"));
 
 service.AddControllersWithViews();
 service.AddScoped<AuthRepository>();
+service.AddScoped<UserRepository>();
 
 //JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

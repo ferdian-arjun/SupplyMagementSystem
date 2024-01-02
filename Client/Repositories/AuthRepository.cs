@@ -9,12 +9,12 @@ using SupplyManagementSystem.Configurations;
 
 namespace SupplyManagementSystem.Repositories;
 
-public class AuthRepository : GeneralRepository<User, string>
+public class AuthRepository
 {
     private readonly BaseUrls _baseUrls;
     private readonly string _request;
     private readonly HttpClient httpClient;
-    public AuthRepository(IOptions<BaseUrls> connectionConfig, string request = "auth/") : base(request, connectionConfig)
+    public AuthRepository(IOptions<BaseUrls> connectionConfig, string request = "auth/")
     {
         _request = request;
         _baseUrls = connectionConfig.Value;
@@ -26,13 +26,11 @@ public class AuthRepository : GeneralRepository<User, string>
     
     public async Task<ResponseDataHandler<TokenDto>> Auth(LoginDto loginDto)
     {
-        ResponseDataHandler<TokenDto> jwtToken = null;
-        
         var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
         var response = await httpClient.PostAsync(_request + "login", content);
         var apiResponse = response.Content.ReadAsStringAsync().Result;
         
-        jwtToken = JsonConvert.DeserializeObject<ResponseDataHandler<TokenDto>>(apiResponse);
+        var jwtToken = JsonConvert.DeserializeObject<ResponseDataHandler<TokenDto>>(apiResponse);
         
         return jwtToken;
 

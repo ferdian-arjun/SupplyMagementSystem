@@ -4,9 +4,21 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Client</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true"/>
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/> *@
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/> *@
+    @* <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true"/> *@
+    <!-- Bootstrap -->
+    <link href="~/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Datatables -->
+    <link href="~/assets/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+    
+     <!-- Sweet Alert 2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <header>
@@ -31,6 +43,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -47,9 +62,38 @@
         &copy; 2023 - Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+@* *@
+@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+@* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+@* <script src="~/js/site.js" asp-append-version="true"></script> *@
+<script>
+console.log("test");
+
+</script>
+
+<!-- jQuery -->
+<script src="~/assets/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/assets/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Datatables -->
+<script src="~/assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="~/assets/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/assets/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="~/assets/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="~/assets/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="~/assets/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="~/assets/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="~/assets/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="~/assets/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/assets/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="~/assets/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+
+ <!-- Custom Theme Scripts -->
+<script src="~/assets/build/js/custom.min.js"></script>
+
+<script src="~/data/dataUser.js"></script>
+@* @await RenderSectionAsync("Scripts", required: false) *@
 </body>
 </html>

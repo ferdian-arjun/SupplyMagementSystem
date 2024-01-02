@@ -1,0 +1,123 @@
+@{
+    ViewBag.Title = "Users Menu";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <h3>User List</h3>
+
+    <div class="card-box table-responsive">
+        <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreate">Create User</button>
+        
+        <div id="modalCreate" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Create new account</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="form-create-user" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputUserName">Username</label>
+                                <input id="inputUserName" type="text" class="form-control" value="">
+                                <div class="invalid-feedback">
+                                    <span id="messageUserName"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail">Email</label>
+                                <input id="inputEmail" type="text" class="form-control" value="">
+                                <div class="invalid-feedback">
+                                    <span id="messageEmail"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputFullName">Full Name</label>
+                                <input id="inputFullName" type="text" class="form-control" value="">
+                                <div class="invalid-feedback">
+                                    <span id="messageFullName"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword">Password</label>
+                                <input id="inputPassword" type="text" class="form-control" value="">
+                                <div class="invalid-feedback">
+                                    <span id="messagePassword"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Create Data</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <table id="datatable-user" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+            <tr>
+                <th width="1%">No</th>
+                <th>Username</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Created Date</th>
+                <th>Update Date</th>
+                <th width="10%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="editLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form-edit-user" method="post">
+                <input id="inputUserGuidEdit" type="hidden"/>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputUserNameEdit">Username</label>
+                        <input id="inputUserNameEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageUserNameEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmailEdit">Email</label>
+                        <input id="inputEmailEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageEmailEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputFullNameEdit">Full Name</label>
+                        <input id="inputFullNameEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageFullNameEdit"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
