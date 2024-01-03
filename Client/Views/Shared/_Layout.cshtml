@@ -38,10 +38,13 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Vendor" asp-action="Index">Vendor</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="CompanyRegister">Company Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Vendor" asp-action="Index">Vendor</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
@@ -93,7 +96,22 @@ console.log("test");
  <!-- Custom Theme Scripts -->
 <script src="~/assets/build/js/custom.min.js"></script>
 
-<script src="~/data/dataUser.js"></script>
+@if (ViewBag.Title == "Users Menu")
+{
+    <script src="~/data/dataUser.js"></script>
+}
+
+@if (ViewBag.Title == "Company Register Menu")
+{
+    <script src="~/data/dataCompanyRegister.js"></script>
+}
+
+@if (ViewBag.Title == "Company Menu")
+{
+    <script src="~/data/dataCompany.js"></script>
+}
+
+
 @* @await RenderSectionAsync("Scripts", required: false) *@
 </body>
 </html>

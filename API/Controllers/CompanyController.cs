@@ -26,13 +26,13 @@ public class CompanyController : ControllerBase
         {
             var result = _companyService.Get(); 
             if (!result.Any())
-                return NotFound(new ResponseDataHandler<GetCompanyDto>
+                return NotFound(new ResponseDataHandler<GetCompanyWithStatusDto>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
                     Message = "Data Not Found"
                 });
-            return Ok(new ResponseDataHandler<IEnumerable<GetCompanyDto>>
+            return Ok(new ResponseDataHandler<IEnumerable<GetCompanyWithStatusDto>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
@@ -105,8 +105,8 @@ public class CompanyController : ControllerBase
                 });
             return Ok(new ResponseHandler
             {
-                Code = StatusCodes.Status201Created,
-                Status = HttpStatusCode.Created.ToString(),
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
                 Message = "Successfully Updated"
             });
         }
@@ -182,6 +182,38 @@ public class CompanyController : ControllerBase
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Data created successfully",
                 Data = create
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseExceptionHandler
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = ex.Message
+            });
+        }
+    }
+    
+    [HttpGet("get-waiting-for-approval")]
+    public IActionResult GetWaitingForApproval()
+    {
+        try
+        {
+            var result = _companyService.GetWaitingForApproval(); 
+            if (!result.Any())
+                return NotFound(new ResponseDataHandler<GetWaitingForApprovalDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            return Ok(new ResponseDataHandler<IEnumerable<GetWaitingForApprovalDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data Found",
+                Data = result
             });
         }
         catch (Exception ex)

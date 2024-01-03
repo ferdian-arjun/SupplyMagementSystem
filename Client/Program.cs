@@ -35,6 +35,8 @@ service.Configure<BaseUrls>(configuration.GetSection("ConnectionStrings"));
 service.AddControllersWithViews();
 service.AddScoped<AuthRepository>();
 service.AddScoped<UserRepository>();
+service.AddScoped<CompanyRepository>();
+service.AddScoped<VendorRepository>();
 
 //JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

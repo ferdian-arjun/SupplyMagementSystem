@@ -7,8 +7,8 @@ function init_DataTables() {
     console.log("init_DataTables");
 
     var handleDataTableButtons = function () {
-        if ($("#datatable-user").length) {
-            var t = $("#datatable-user").DataTable({
+        if ($("#datatable-company").length) {
+            var t = $("#datatable-company").DataTable({
                 responsive: true,
                 order: [[1, 'asc']],
                 columnDefs: [{
@@ -17,7 +17,7 @@ function init_DataTables() {
                     targets: [0, 2]
                 }],
                 ajax: {
-                    url: "user/get",
+                    url: "company/get",
                     datatype: "json",
                     dataSrc: "",
                 },
@@ -28,13 +28,22 @@ function init_DataTables() {
                         }
                     },
                     {
-                        data: "username",
-                    },
-                    {
-                        data: "fullName",
+                        data: "name",
                     },
                     {
                         data: "email",
+                    },
+                    {
+                        data: "telp",
+                    },
+                    {
+                        data: "image",
+                    },
+                    {
+                        data: "status",
+                    },
+                    {
+                        data: "confirmBy",
                     },
                     {
                         data: "createdAt",
@@ -113,31 +122,22 @@ function init_DataTables() {
     TableManageButtons.init();
 }
 
-function checkValidation(errorMsg, elementById, elementMsg) {
-    if (errorMsg != undefined) {
-        document.getElementById(`${elementById}`).className = "form-control is-invalid";
-        $(`#${elementMsg}`).html(` ${errorMsg}`);
-    } else {
-        document.getElementById(`${elementById}`).className = "form-control is-valid";
-    }
-}
-
 //create data
-$("#form-create-user").submit(function (event) {
+$("#form-create-company").submit(function (event) {
 
     /* stop form from submitting normally */
     event.preventDefault();
 
     var data_input = new Object();
-    data_input.Fullname = $("#inputFullName").val();
+    data_input.Name = $("#inputName").val();
     data_input.Email = $("#inputEmail").val();
-    data_input.Fullname = $("#").val();
-    data_input.Password = $("#inputPassword").val();
+    data_input.Telp = $("#inputTelp").val();
+    data_input.Image = $("#inputImage").val();
 
     console.log(data_input);
 
     $.ajax({
-        url: '/user/post',
+        url: '/company/post',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -169,7 +169,7 @@ $("#form-create-user").submit(function (event) {
                 })
 
                 //reload only datatable
-                $('#datatable-user').DataTable().ajax.reload();
+                $('#datatable-company').DataTable().ajax.reload();
             }
 
         },
@@ -183,39 +183,41 @@ $("#form-create-user").submit(function (event) {
 //Edit
 editModalRole = (guid) => {
     $.ajax({
-        url: `/user/get/${guid}`,
+        url: `/company/get/${guid}`,
     }).done((result) => {
-         console.log(result);
+        console.log(result);
 
         //set value
-        $('#inputUserGuidEdit').val(`${result.guid}`);
-        $('#inputFullNameEdit').val(`${result.fullName}`);
+        $('#inputCompanyGuidEdit').val(`${result.guid}`);
+        $('#inputNameEdit').val(`${result.name}`);
         $('#inputEmailEdit').val(`${result.email}`);
-        $('#inputUserNameEdit').val(`${result.username}`);
-
+        $('#inputTelpEdit').val(`${result.telp}`);
+        $('#inputImageEdit').val(`${result.image}`);
+        
     }).fail((result) => {
         console.log(result);
     });
 }
 
 //update
-$("#form-edit-user").submit(function (event) {
+$("#form-edit-company").submit(function (event) {
 
 
     /* stop form from submitting normally */
     event.preventDefault();
- 
+
     var data_input = {
-        "Guid": $("#inputUserGuidEdit").val(),
-        "FullName": $("#inputFullNameEdit").val(),
-        "UserName": $("#inputUserNameEdit").val(),
-        "Email": $("#inputEmailEdit").val()
+        "Guid": $("#inputCompanyGuidEdit").val(),
+        "Name": $("#inputNameEdit").val(),
+        "Email": $("#inputEmailEdit").val(),
+        "Telp": $("#inputTelpEdit").val(),
+        "Image": $("#inputImageEdit").val()
     }
 
     console.log(JSON.stringify(data_input));
 
     $.ajax({
-        url: `/user/update`,
+        url: `/company/update`,
         method: 'PUT',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -247,7 +249,7 @@ $("#form-edit-user").submit(function (event) {
                 })
 
                 //reload only datatable
-                $('#datatable-user').DataTable().ajax.reload();
+                $('#datatable-company').DataTable().ajax.reload();
             }
 
         },
@@ -274,11 +276,11 @@ deleteModalRole = (guid) => {
         if (isDelete.isConfirmed) {
 
             $.ajax({
-                url: `/user/deleted/${guid}`,
+                url: `/company/deleted/${guid}`,
                 method: 'DELETE',
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (response) {
-                    
+
                     if (response.code != 200) {
                         Swal.fire({
                             icon: "error",
@@ -291,9 +293,9 @@ deleteModalRole = (guid) => {
                             `Data deleted successfully`,
                             'success'
                         );
-                        
+
                         //reload only datatable
-                        $('#datatable-user').DataTable().ajax.reload();
+                        $('#datatable-company').DataTable().ajax.reload();
                     }
                 },
             })

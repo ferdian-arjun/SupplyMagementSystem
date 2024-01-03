@@ -1,21 +1,21 @@
 using System.Net.Http.Headers;
 using System.Text;
-using API.Dtos.User;
+using API.Dtos.Company;
 using API.Utilities.Handler;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SupplyManagementSystem.Configurations;
 
-namespace SupplyManagementSystem.Repositories
+namespace SupplyManagementSystem.Repositories;
+
+public class CompanyRepository
 {
-    public class UserRepository
-    {
-        private readonly string _request;
+     private readonly string _request;
         private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserRepository(IOptions<BaseUrls> connectionConfig, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, string request = "users/")
+        public CompanyRepository(IOptions<BaseUrls> connectionConfig, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, string request = "companies/")
         {
             _request = request;
             _httpClientFactory = httpClientFactory;
@@ -37,44 +37,39 @@ namespace SupplyManagementSystem.Repositories
             }
         }
 
-        public async Task<List<GetUserDto>> GetAll()
+        public async Task<IEnumerable<GetCompanyWithStatusDto>> GetAll()
         {
-            ResponseDataHandler<List<GetUserDto>> entities;
+            ResponseDataHandler<List<GetCompanyWithStatusDto>> entities;
 
             using var response = await _httpClient.GetAsync(_request);
             var apiResponse = await response.Content.ReadAsStringAsync();
-            entities = JsonConvert.DeserializeObject<ResponseDataHandler<List<GetUserDto>>>(apiResponse);
+            entities = JsonConvert.DeserializeObject<ResponseDataHandler<List<GetCompanyWithStatusDto>>>(apiResponse);
             
-            if (entities.Data != null)
-            {
-                return entities.Data;
-            }
-
-            return (List<GetUserDto>)Enumerable.Empty<GetUserDto>();
+            return entities.Data ?? Enumerable.Empty<GetCompanyWithStatusDto>();
         }
 
-        public async Task<ResponseDataHandler<GetUserDto>> Post(CreateUserDto createUserDto)
+        public async Task<ResponseDataHandler<GetCompanyDto>> Post(CreateCompanyDto createCompanyDto)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(createUserDto), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(createCompanyDto), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_request, content);
             var apiResponse = response.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject<ResponseDataHandler<GetUserDto>>(apiResponse);
+            return JsonConvert.DeserializeObject<ResponseDataHandler<GetCompanyDto>>(apiResponse);
         }
 
-        public async Task<GetUserDto?> Get(string guid)
+        public async Task<GetCompanyDto?> Get(string guid)
         {
-            ResponseDataHandler<GetUserDto> entities;
+            ResponseDataHandler<GetCompanyDto> entities;
             
             using var response = await _httpClient.GetAsync(_request + guid);
             var apiResponse = await response.Content.ReadAsStringAsync();
-            entities = JsonConvert.DeserializeObject<ResponseDataHandler<GetUserDto>>(apiResponse);
+            entities = JsonConvert.DeserializeObject<ResponseDataHandler<GetCompanyDto>>(apiResponse);
             
             return entities.Data ?? null;
         }
         
-        public async Task<ResponseHandler> Put(UpdateUserDto updateUserDto)
+        public async Task<ResponseHandler> Put(UpdateCompanyDto updateCompanyDto)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(updateUserDto), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(updateCompanyDto), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(_request, content);
             var apiResponse = response.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<ResponseHandler>(apiResponse);
@@ -86,5 +81,15 @@ namespace SupplyManagementSystem.Repositories
             var apiResponse = response.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<ResponseHandler>(apiResponse);
         }
-    }
+
+        public async Task<IEnumerable<GetWaitingForApprovalDto>> GetWaitingForApproval()
+        {
+            ResponseDataHandler<List<GetWaitingForApprovalDto>> entities;
+
+            using var response = await _httpClient.GetAsync(_request + "get-waiting-for-approval");
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            entities = JsonConvert.DeserializeObject<ResponseDataHandler<List<GetWaitingForApprovalDto>>>(apiResponse);
+            
+            return entities.Data ?? Enumerable.Empty<GetWaitingForApprovalDto>();
+        }
 }
