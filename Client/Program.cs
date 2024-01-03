@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Security.Claims;
 using System.Text;
 using API.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -54,6 +55,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+    
+    options.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = context =>
+        {
+            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+
+            // Extract roles from the claims and add them to the ClaimsPrincipal
+            var roleClaims = claimsIdentity?.FindAll(ClaimTypes.Role)?.ToList();
+            if (roleClaims != null && roleClaims.Any())
+            {
+                var newClaims = roleClaims.Select(roleClaim => new Claim(ClaimTypes.Role, roleClaim.Value)).ToList();
+
+                foreach (var newClaim in newClaims)
+                {
+                    claimsIdentity.AddClaim(newClaim);
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+
 });
 
 var app = builder.Build();
@@ -82,6 +106,7 @@ app.Use(async (context, next) =>
     {
         context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
     }
+    
     await next();
 });
 
@@ -89,15 +114,17 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Auth}/{action=Login}");
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-// app.UseEndpoints(endpoints =>
-// {
-//     endpoints.MapControllerRoute(
-//         name: "default",
-//         pattern: "{controller=Auth}/{action=Login}");
-// });
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Auth}/{action=Login}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Auth}/{action=Login}");
+});
 
 app.Run();

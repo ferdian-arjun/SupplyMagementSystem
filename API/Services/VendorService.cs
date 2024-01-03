@@ -30,21 +30,24 @@ public class VendorService
         foreach (var vendor in vendors)
         {
             var company = _companyRepository.GetByGuid(vendor.CompanyGuid);
-            getProjectDtos.Add(new GetVendorDto()
+            if (company.DeletedAt == null)
             {
-                Guid = vendor.Guid,
-                CompanyGuid = vendor.CompanyGuid,
-                CompanyName = company.Name,
-                CompanyEmail = company.Email,
-                CompanyImage = company.Image,
-                CompanyBusinessType = company.BusinessType,
-                CompanyTelp = company.Telp,
-                CompanyType = company.Type,
-                Status = vendor.Status.ToString(),
-                ConfirmBy = vendor.ConfirmByNavigation?.FullName,
-                CreatedAt = vendor.CreatedAt,
-                UpdatedAt = vendor.UpdatedAt,
-            });
+                getProjectDtos.Add(new GetVendorDto()
+                {
+                    Guid = vendor.Guid,
+                    CompanyGuid = vendor.CompanyGuid,
+                    CompanyName = company.Name,
+                    CompanyEmail = company.Email,
+                    CompanyImage = company.Image,
+                    CompanyBusinessType = company.BusinessType,
+                    CompanyTelp = company.Telp,
+                    CompanyType = company.Type,
+                    Status = vendor.Status.ToString(),
+                    ConfirmBy = vendor.ConfirmByNavigation?.FullName,
+                    CreatedAt = vendor.CreatedAt,
+                    UpdatedAt = vendor.UpdatedAt,
+                });
+            }
         }
         
         return getProjectDtos;

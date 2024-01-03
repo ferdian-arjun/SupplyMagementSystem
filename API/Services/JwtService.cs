@@ -16,20 +16,26 @@ public class JwtService : IJwtService
         _configuration = configuration;
     }
 
-    public string GenerateToken(User user)
+    public string GenerateToken(User user, List<string> roleUser)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
-        
-        
+    
+        var claims = new List<Claim>
+        {
+            new Claim("FullName", user.FullName),
+            new Claim("Guid", user.Guid),
+            new Claim(ClaimTypes.Email, user.Email),
+        };
+
+        foreach (var role in roleUser)
+        {
+            claims.Add(new Claim("Role", role));
+        }
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim("FullName", user.FullName),
-                new Claim("Guid", user.Guid),
-                new Claim(ClaimTypes.Email, user.Email),
-            }),
+            Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
         };
@@ -37,4 +43,5 @@ public class JwtService : IJwtService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
 }

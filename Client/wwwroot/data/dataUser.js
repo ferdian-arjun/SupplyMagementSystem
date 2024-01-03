@@ -129,10 +129,10 @@ $("#form-create-user").submit(function (event) {
     event.preventDefault();
 
     var data_input = new Object();
-    data_input.Fullname = $("#inputFullName").val();
     data_input.Email = $("#inputEmail").val();
-    data_input.Fullname = $("#").val();
+    data_input.UserName = $("#inputUserName").val();
     data_input.Password = $("#inputPassword").val();
+    data_input.FullName = $("#inputFullNamex").val();
 
     console.log(data_input);
 

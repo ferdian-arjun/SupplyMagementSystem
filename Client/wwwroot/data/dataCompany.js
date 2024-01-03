@@ -187,12 +187,17 @@ editModalCompany = (guid) => {
     }).done((result) => {
         console.log(result);
 
+        var form = document.getElementById('form-edit-company');
+        form.reset();
+
         //set value
         $('#inputCompanyGuidEdit').val(`${result.guid}`);
         $('#inputNameEdit').val(`${result.name}`);
         $('#inputEmailEdit').val(`${result.email}`);
         $('#inputTelpEdit').val(`${result.telp}`);
         $('#inputImageEdit').val(`${result.image}`);
+        $('#inputBusinessTypeEdit').val(`${result.businessType || ""}`);
+        $('#inputTypeEdit').val(`${result.type || ""}`);
         if (result.isApproved === true) {
             $('#inputBusinessTypeEdit').prop('disabled', false);
             $('#inputTypeEdit').prop('disabled', false);
@@ -218,7 +223,9 @@ $("#form-edit-company").submit(function (event) {
         "Name": $("#inputNameEdit").val(),
         "Email": $("#inputEmailEdit").val(),
         "Telp": $("#inputTelpEdit").val(),
-        "Image": $("#inputImageEdit").val()
+        "Image": $("#inputImageEdit").val(),
+        "BusinessType":  $('#inputBusinessTypeEdit').val(),
+        "Type": $('#inputTypeEdit').val()
     }
 
     console.log(JSON.stringify(data_input));

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.Dtos.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,17 +40,34 @@ public class AuthController : Controller
             return RedirectToAction("login");
         }
 
-        //Reading claims
+        // Reading claims
         string getEmail = JwtHandler.GetClaim(token, JwtRegisteredClaimNames.Email);
         string getFullName = JwtHandler.GetClaim(token, "FullName");
         string getGuid = JwtHandler.GetClaim(token, "Guid");
-            
-        //set session
+    
+        // Set session
         HttpContext.Session.SetString("JWToken", token);
         HttpContext.Session.SetString("LogEmail", getEmail);
         HttpContext.Session.SetString("LogGuid", getGuid);
         HttpContext.Session.SetString("LogFullName", getFullName);
+
+        // Retrieve multiple claims of a specific type
+        List<string> userRoles = JwtHandler.GetClaims(token, "Role");
+
+        // Set roles in session
+        if (userRoles != null && userRoles.Any())
+        {
+            HttpContext.Session.SetString("LogRoles", string.Join(",", userRoles));
+        }
           
         return RedirectToAction("index", "Home");
+    }
+    
+    [HttpGet("logout")]
+    public ActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+
+        return RedirectToAction("login");
     }
 }
