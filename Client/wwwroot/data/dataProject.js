@@ -7,8 +7,8 @@ function init_DataTables() {
     console.log("init_DataTables");
 
     var handleDataTableButtons = function () {
-        if ($("#datatable-company").length) {
-            var t = $("#datatable-company").DataTable({
+        if ($("#datatable-project").length) {
+            var t = $("#datatable-project").DataTable({
                 responsive: true,
                 order: [[1, 'asc']],
                 columnDefs: [{
@@ -17,7 +17,7 @@ function init_DataTables() {
                     targets: [0, 2]
                 }],
                 ajax: {
-                    url: "company/get",
+                    url: "project/get",
                     datatype: "json",
                     dataSrc: "",
                 },
@@ -31,19 +31,16 @@ function init_DataTables() {
                         data: "name",
                     },
                     {
-                        data: "email",
+                        data: "description",
                     },
                     {
-                        data: "telp",
+                        data: "startDate",
                     },
                     {
-                        data: "image",
+                        data: "endDate",
                     },
                     {
                         data: "status",
-                    },
-                    {
-                        data: "confirmBy",
                     },
                     {
                         data: "createdAt",
@@ -56,10 +53,13 @@ function init_DataTables() {
 
                             return `
                                 <div class="float-right d-flex flex-row">
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalCompany('${row["guid"]}')">
+                                    <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalAddVendor"  onclick="addVendorModalProject('${row["guid"]}')">
+                                        Select Vendor
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#modalEdit"  onclick="editModalProject('${row["guid"]}')">
                                         Edit
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalCompany('${row["guid"]}')">
+                                    <button type="button" class="btn btn-danger btn-sm mr-2"  onclick="deleteModalProject('${row["guid"]}')">
                                         Delete
                                     </button>
                                 </div>
@@ -123,21 +123,21 @@ function init_DataTables() {
 }
 
 //create data
-$("#form-create-company").submit(function (event) {
+$("#form-create-project").submit(function (event) {
 
     /* stop form from submitting normally */
     event.preventDefault();
 
     var data_input = new Object();
     data_input.Name = $("#inputName").val();
-    data_input.Email = $("#inputEmail").val();
-    data_input.Telp = $("#inputTelp").val();
-    data_input.Image = $("#inputImage").val();
+    data_input.Description = $("#inputDescription").val();
+    data_input.StartDate = $("#inputStartDate").val();
+    data_input.EndDate = $("#inputEndDate").val();
 
     console.log(data_input);
 
     $.ajax({
-        url: '/company/post',
+        url: '/project/post',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -169,7 +169,7 @@ $("#form-create-company").submit(function (event) {
                 })
 
                 //reload only datatable
-                $('#datatable-company').DataTable().ajax.reload();
+                $('#datatable-project').DataTable().ajax.reload();
             }
 
         },
@@ -181,50 +181,50 @@ $("#form-create-company").submit(function (event) {
 });
 
 //Edit
-editModalCompany = (guid) => {
+editModalProject = (guid) => {
     $.ajax({
-        url: `/company/get/${guid}`,
+        url: `/project/get/${guid}`,
     }).done((result) => {
         console.log(result);
 
         //set value
-        $('#inputCompanyGuidEdit').val(`${result.guid}`);
+        $('#inputProjectGuidEdit').val(`${result.guid}`);
         $('#inputNameEdit').val(`${result.name}`);
-        $('#inputEmailEdit').val(`${result.email}`);
-        $('#inputTelpEdit').val(`${result.telp}`);
-        $('#inputImageEdit').val(`${result.image}`);
-        if (result.isApproved === true) {
-            $('#inputBusinessTypeEdit').prop('disabled', false);
-            $('#inputTypeEdit').prop('disabled', false);
-        } else {
-            $('#inputBusinessTypeEdit').prop('disabled', true);
-            $('#inputTypeEdit').prop('disabled', true);
-        }
-        
+        $('#inputDescriptionEdit').val(`${result.description}`);
+        $('#inputStartDateEdit').val(`${result.startDate}`);
+        $('#inputEndDateEdit').val(`${result.endDate}`);
+        $('#inputStatusEdit').val(`${result.status}`);
+
+        if (result.status == "OnPlan") document.getElementById('inputStatusEdit').selectedIndex = 0;
+        if (result.status == "OnProgress") document.getElementById('inputStatusEdit').selectedIndex = 1;
+        if (result.status == "Done") document.getElementById('inputStatusEdit').selectedIndex = 2;
+        if (result.status == "Canceled") document.getElementById('inputStatusEdit').selectedIndex = 3;
+
     }).fail((result) => {
         console.log(result);
     });
 }
 
 //update
-$("#form-edit-company").submit(function (event) {
+$("#form-edit-project").submit(function (event) {
 
 
     /* stop form from submitting normally */
     event.preventDefault();
 
     var data_input = {
-        "Guid": $("#inputCompanyGuidEdit").val(),
+        "Guid": $("#inputProjectGuidEdit").val(),
         "Name": $("#inputNameEdit").val(),
-        "Email": $("#inputEmailEdit").val(),
-        "Telp": $("#inputTelpEdit").val(),
-        "Image": $("#inputImageEdit").val()
+        "Description": $("#inputDescriptionEdit").val(),
+        "StartDate": $("#inputStartDateEdit").val(),
+        "EndDate": $("#inputEndDateEdit").val(),
+        "Status": $("#inputStatusEdit").val()
     }
 
     console.log(JSON.stringify(data_input));
 
     $.ajax({
-        url: `/company/update`,
+        url: `/project/update`,
         method: 'PUT',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -256,7 +256,7 @@ $("#form-edit-company").submit(function (event) {
                 })
 
                 //reload only datatable
-                $('#datatable-company').DataTable().ajax.reload();
+                $('#datatable-project').DataTable().ajax.reload();
             }
 
         },
@@ -267,7 +267,7 @@ $("#form-edit-company").submit(function (event) {
 });
 
 //delete 
-deleteModalCompany = (guid) => {
+deleteModalProject = (guid) => {
 
     console.log(guid);
 
@@ -283,7 +283,7 @@ deleteModalCompany = (guid) => {
         if (isDelete.isConfirmed) {
 
             $.ajax({
-                url: `/company/deleted/${guid}`,
+                url: `/project/deleted/${guid}`,
                 method: 'DELETE',
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (response) {
@@ -302,10 +302,112 @@ deleteModalCompany = (guid) => {
                         );
 
                         //reload only datatable
-                        $('#datatable-company').DataTable().ajax.reload();
+                        $('#datatable-project').DataTable().ajax.reload();
                     }
                 },
             })
         }
     })
+}
+
+
+//ADD VENDOR
+addVendorModalProject = (guid) => {
+    
+    deleteAllOptions();
+    
+    $.ajax({
+        url: `/project/get/${guid}`,
+    }).done((result) => {
+        console.log(result);
+
+        //set value
+        $('#inputProjectGuidAddVendor').val(`${result.guid}`);
+        $('#inputNameAddVendor').val(`${result.name}`);
+        
+        
+    }).fail((result) => {
+        console.log(result);
+    });
+
+    $.ajax({
+        url: `/vendor/get`,
+    }).done((result) => {
+        console.log(result);
+        // Assuming the JSON data is an array of objects with 'value' and 'text' properties
+        result.forEach(item => {
+            addOption(item.guid, item.companyName);
+        });
+    });
+}
+
+$("#form-add-vendor").submit(function (event) {
+
+
+    /* stop form from submitting normally */
+    event.preventDefault();
+
+    var data_input = {
+        "projectGuid": $("#inputProjectGuidAddVendor").val(),
+        "vendorGuid": $("#inputVendorGuidAddVendor").val(),
+    }
+
+    console.log(JSON.stringify(data_input));
+
+    $.ajax({
+        url: `/project/add-vendor`,
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        data: data_input,
+        success: function (response) {
+
+            console.log(response);
+
+            if (response.code != 201) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: response.message
+                });
+            } else {
+
+                //idmodal di hide
+                document.getElementById("modalAddVendor").className = "modal fade";
+                $('.modal-backdrop').remove();
+
+
+                //sweet alert message success
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${response.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+                //reload only datatable
+                $('#datatable-project').DataTable().ajax.reload();
+            }
+
+        },
+        error: function (xhr, status, error) {
+            var err = eval(xhr.responseJSON);
+        }
+    });
+});
+
+
+// Function to add options dynamically
+function addOption(value, text) {
+    var select = document.getElementById('inputVendorGuidAddVendor');
+    var option = document.createElement('option');
+    option.value = value;
+    option.text = text;
+    select.appendChild(option);
+}
+
+function deleteAllOptions() {
+    var select = document.getElementById('inputVendorGuidAddVendor');
+    select.innerHTML = ''; // Set innerHTML to an empty string to remove all options
 }

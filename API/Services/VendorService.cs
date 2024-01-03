@@ -3,6 +3,7 @@ using API.Dtos.Vendor;
 using API.Entities;
 using API.Interface;
 using API.Repositories;
+using API.Utilities.Enum;
 using API.Utilities.Handler;
 
 namespace API.Services;
@@ -22,7 +23,7 @@ public class VendorService
     
     public IEnumerable<GetVendorDto> Get()
     {
-        var vendors = _vendorRepository.Get(includes: vendor => vendor.ConfirmByNavigation!);
+        var vendors = _vendorRepository.Get(where: vendor => vendor.Status == VendorStatus.Approval, includes: vendor => vendor.ConfirmByNavigation!);
         if (!vendors.Any()) return Enumerable.Empty<GetVendorDto>();
         
         List<GetVendorDto> getProjectDtos = new();

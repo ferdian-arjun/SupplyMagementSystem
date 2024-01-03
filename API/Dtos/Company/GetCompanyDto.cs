@@ -1,3 +1,5 @@
+using API.Utilities.Enum;
+
 namespace API.Dtos.Company;
 using Entities;
 
@@ -10,6 +12,7 @@ public class GetCompanyDto
     public string Image { get; set; } = null!;
     public string? BusinessType { get; set; }
     public string? Type { get; set; }
+    public bool? IsApproved { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     
@@ -24,6 +27,7 @@ public class GetCompanyDto
             Image = company.Image,
             BusinessType = company.BusinessType,
             Type = company.Type,
+            IsApproved =  company.TblTrVendors.FirstOrDefault().Status == VendorStatus.Approval,
             CreatedAt = company.CreatedAt,
             UpdatedAt = company.UpdatedAt
         };

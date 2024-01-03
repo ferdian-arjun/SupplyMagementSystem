@@ -3,7 +3,7 @@
     Layout = "_Layout";
 }
 
-<div class="container mt-4">
+<div class="container-fluid m-4">
     <h3>Company List</h3>
     <div class="card-box table-responsive">
         <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreate">Register Company</button>
@@ -121,6 +121,21 @@
                             <span id="messageImageEdit"></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="inputBusinessTypeEdit">BusinessType</label>
+                        <input id="inputBusinessTypeEdit" type="text" class="form-control" value="" >
+                        <div class="invalid-feedback">
+                            <span id="messageBusinessTypeEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTypeEdit">Type</label>
+                        <input id="inputTypeEdit" type="text" class="form-control" value="" >
+                        <div class="invalid-feedback">
+                            <span id="messageTypeEdit"></span>
+                        </div>
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

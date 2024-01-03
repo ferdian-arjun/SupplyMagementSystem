@@ -106,8 +106,8 @@ public class ProjectController: ControllerBase
                 });
             return Ok(new ResponseHandler
             {
-                Code = StatusCodes.Status201Created,
-                Status = HttpStatusCode.Created.ToString(),
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
                 Message = "Successfully Updated"
             });
         }

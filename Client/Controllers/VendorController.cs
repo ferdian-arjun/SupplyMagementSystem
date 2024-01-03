@@ -22,6 +22,13 @@ public class VendorController : Controller
         return View();
     }
     
+    [HttpGet("get")]
+    public async Task<JsonResult> GetAll()
+    {
+        var result = await _vendorRepository.GetAll();
+        return Json(result);
+    }
+    
     [HttpPut("update-status")]
     public async Task<JsonResult> UpdateStatus(UpdateStatusVendorDto updateStatusVendorDto)
     {

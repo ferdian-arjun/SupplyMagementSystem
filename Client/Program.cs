@@ -37,6 +37,8 @@ service.AddScoped<AuthRepository>();
 service.AddScoped<UserRepository>();
 service.AddScoped<CompanyRepository>();
 service.AddScoped<VendorRepository>();
+service.AddScoped<ProjectRepository>();
+service.AddScoped<ProjectVendorRepository>();
 
 //JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

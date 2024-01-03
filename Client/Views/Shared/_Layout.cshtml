@@ -38,23 +38,23 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Companys</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="CompanyRegister">Company Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Vendor" asp-action="Index">Vendor</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-<div class="container">
+<div class="container-fluid">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
@@ -109,6 +109,11 @@ console.log("test");
 @if (ViewBag.Title == "Company Menu")
 {
     <script src="~/data/dataCompany.js"></script>
+}
+
+@if (ViewBag.Title == "Project Menu")
+{
+    <script src="~/data/dataProject.js"></script>
 }
 
 

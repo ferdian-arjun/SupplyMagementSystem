@@ -79,7 +79,7 @@ public class CompanyService
 
     public GetCompanyDto? GetByGuid(string guid)
     {
-        var getCompany = _companyRepository.GetByGuid(guid);
+        var getCompany = _companyRepository.Get(where: company => company.Guid == guid, includes: company => company.TblTrVendors!).FirstOrDefault();
         if (getCompany is null) return null;
         return (GetCompanyDto)getCompany;
     }

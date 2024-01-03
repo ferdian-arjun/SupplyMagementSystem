@@ -1,3 +1,4 @@
+using System.Transactions;
 using API.Dtos.ProjectVendor;
 using API.Interface;
 
@@ -28,9 +29,23 @@ public class ProjectVendorService
 
     public GetProjectVendorDto? CreateProjectVendor(CreateProjectVendorDto createProjectVendorDto)
     {
+        using var scope = new TransactionScope();
+        var checkProjectVendor = _projectVendorRepository.Get(
+            where: pv => pv.ProjectGuid == createProjectVendorDto.ProjectGuid).LastOrDefault();
+
+        if (checkProjectVendor != null)
+        {
+            var deleteOldData = _projectVendorRepository.HardDelete(checkProjectVendor);
+            if (!deleteOldData) return null;
+        }
+        
         var createProjectVendor = _projectVendorRepository.Create(createProjectVendorDto);
         if (createProjectVendor is null) return null; 
+        
+        scope.Complete();
+        
         return (GetProjectVendorDto)createProjectVendor;
+       
     }
 
     public int UpdateProjectVendor(UpdateProjectVendorDto updateProjectVendorDto)
